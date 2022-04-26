@@ -25,6 +25,10 @@ on:
         required: true
       argocd_server:
         required: true
+      metrics_deployment_webhook_url:
+        required: false
+      metrics_webhook_token:
+        required: false
       slack_webhook_url:
         required: false
 
@@ -60,6 +64,12 @@ jobs:
           ./argocd app wait ${{ inputs.app }} --sync --health --grpc-web
         env:
           ARGOCD_SERVER: ${{ secrets.argocd_server }}
+      - name: Report deployment
+        if: ${{ env.METRICS_DEPLOYMENT_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H "Authorization: Token ${{ secrets.metrics_webhook_token }}" -H "Content-Type: application/json" -d '{"project":"${{ inputs.app }}","version_identifier":"${{ github.sha }}","environment":"${{ inputs.environment }}","link":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' env.METRICS_DEPLOYMENT_WEBHOOK_URL
+        env:
+          METRICS_DEPLOYMENT_WEBHOOK_URL: ${{ secrets.metrics_deployment_webhook_url }}
       - name: Send status to Slack
         # Third-party action, pin to commit SHA!
         # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
