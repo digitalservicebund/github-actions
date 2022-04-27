@@ -1,0 +1,61 @@
+name: Deploy
+description: "ArgoCD based deploy"
+
+inputs:
+  environment:
+    required: true
+    description: ""
+  version:
+    required: true
+    description: ""
+  deploying_repo:
+    required: true
+    description: ""
+  infra_repo:
+    required: true
+    description: ""
+  deploy_key:
+    required: true
+    description: ""
+  app:
+    required: true
+    description: ""
+  argocd_pipeline_password:
+    required: true
+    description: ""
+  argocd_server:
+    required: true
+    description: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout infra repository
+      uses: actions/checkout@v3
+      with:
+        repository: digitalservice4germany/${{ inputs.infra_repo }}
+        ssh-key: ${{ inputs.deploy_key }}
+    - name: Update image tag for ${{ inputs.environment }}
+      shell: sh
+      run: |
+        cd manifests/overlays/${{ inputs.environment }}
+        kustomize edit set image ghcr.io/digitalservice4germany/${{ inputs.deploying_repo }}:${{ inputs.version }}
+    - name: Commit and push changes for infra repository
+      # Third-party action, pin to commit SHA!
+      # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
+      uses: EndBug/add-and-commit@050a66787244b10a4874a2a5f682130263edc192 # == v9.0.0
+      with:
+        add: manifests/overlays/${{ inputs.environment }}/kustomization.yaml
+        message: "Bump ${{ inputs.environment }} image to ${{ inputs.version }}"
+        pathspec_error_handling: exitImmediately
+        push: true
+    - name: Trigger Argo CD sync
+      shell: sh
+      run: |
+        curl -sSL -o argocd https://${ARGOCD_SERVER}/download/argocd-linux-amd64
+        chmod +x argocd
+        ./argocd login ${ARGOCD_SERVER} --username pipeline --password ${{ inputs.argocd_pipeline_password }} --grpc-web
+        ./argocd app get --refresh ${{ inputs.app }} --auth-token $(./argocd account generate-token --account ${{ inputs.app }}-deploy --expires-in 300s --grpc-web) --grpc-web > /dev/null
+        ./argocd app wait ${{ inputs.app }} --sync --health --grpc-web
+      env:
+        ARGOCD_SERVER: ${{ inputs.argocd_server }}
