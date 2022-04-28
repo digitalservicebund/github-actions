@@ -1,13 +1,13 @@
 name: Track Deploy
-description: "Track deployment related metrics"
+description: "Track deployment related metrics. Requires curl to run."
 
 inputs:
   project:
     required: true
-    description: ""
+    description: "Project name to track deployments for."
   environment:
     required: true
-    description: ""
+    description: "Environment being deployed, e.g. staging, production."
   metrics_deployment_webhook_url:
     required: true
     description: ""
