@@ -1,31 +1,31 @@
 name: Deploy
-description: "ArgoCD based deploy"
+description: "ArgoCD based deploy action. Requires kustomize to run."
 
 inputs:
   environment:
     required: true
-    description: ""
+    description: "Environment to deploy to, e.g. staging, production."
   version:
     required: true
-    description: ""
+    description: "Container image tag being deployed, e.g. a commit SHA."
   deploying_repo:
     required: true
-    description: ""
+    description: "Repository which is running the pipeline to deploy from."
   infra_repo:
     required: true
-    description: ""
+    description: "Repository for ArgoCD to pick up changes from."
   deploy_key:
     required: true
-    description: ""
+    description: "Private key, with its public counterpart expected to be attached to `infra_repo` as deploy key."
   app:
     required: true
-    description: ""
+    description: "ArgoCD application to be deployed."
   argocd_pipeline_password:
     required: true
-    description: ""
+    description: "Password for the `pipeline` user in ArgoCD (read-only permissions for such user are sufficient)."
   argocd_server:
     required: true
-    description: ""
+    description: "Host name of the server where ArgoCD runs, e.g. argocd.example.com"
 
 runs:
   using: "composite"
