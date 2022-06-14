@@ -55,6 +55,7 @@ runs:
         curl -sSL -o argocd https://${ARGOCD_SERVER}/download/argocd-linux-amd64
         chmod +x argocd
         ./argocd login ${ARGOCD_SERVER} --username pipeline --password ${{ inputs.argocd_pipeline_password }} --grpc-web
+        ./argocd app wait ${{ inputs.app }} --sync --health --grpc-web
         ./argocd app get --refresh ${{ inputs.app }} --grpc-web > /dev/null
         ./argocd app wait ${{ inputs.app }} --sync --health --grpc-web
       env:
