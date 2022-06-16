@@ -46,7 +46,7 @@ runs:
       uses: EndBug/add-and-commit@050a66787244b10a4874a2a5f682130263edc192 # == v9.0.0
       with:
         add: manifests/overlays/${{ inputs.environment }}/kustomization.yaml
-        message: "Bump ${{ inputs.environment }} image to ${{ inputs.version }}"
+        message: "Bump ${{ inputs.environment }} image to ${{ inputs.version }}\n\n[skip ci]"
         pathspec_error_handling: exitImmediately
         push: true
     - name: Trigger Argo CD sync
