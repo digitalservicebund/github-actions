@@ -33,13 +33,13 @@ runs:
     - name: Checkout infra repository
       uses: actions/checkout@v3
       with:
-        repository: digitalservice4germany/${{ inputs.infra_repo }}
+        repository: digitalservicebund/${{ inputs.infra_repo }}
         ssh-key: ${{ inputs.deploy_key }}
     - name: Update image tag for ${{ inputs.environment }}
       shell: sh
       run: |
         cd manifests/overlays/${{ inputs.environment }}
-        kustomize edit set image ghcr.io/digitalservice4germany/${{ inputs.deploying_repo }}:${{ inputs.version }}
+        kustomize edit set image ghcr.io/digitalservicebund/${{ inputs.deploying_repo }}:${{ inputs.version }}
     - name: Commit and push changes for infra repository
       # Third-party action, pin to commit SHA!
       # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
