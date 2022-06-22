@@ -17,4 +17,4 @@ runs:
     - name: Linting workflow file
       shell: sh
       run: |
-        npx --yes @digitalservice4germany/github-actions-linter@v0.1.1
+        npx --yes gh-actions-linter@v0.1.5
