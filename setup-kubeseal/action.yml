@@ -1,0 +1,23 @@
+name: "Setup kubeseal"
+description: "Sets up kubeseal CLI in your GitHub Actions workflow."
+
+inputs:
+  version:
+    required: false
+    default: "0.18.0"
+    description: "kubeseal CLI version to install"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install kubeseal
+      shell: bash
+      run: |
+        set -eu
+        curl -sL https://github.com/bitnami-labs/sealed-secrets/releases/download/v${{ inputs.version }}/kubeseal-${{ inputs.version }}-linux-amd64.tar.gz \
+          -o $GITHUB_WORKSPACE/kubeseal-${{ inputs.version }}-linux-amd64.tar.gz
+        tar xzvf $GITHUB_WORKSPACE/kubeseal-${{ inputs.version }}-linux-amd64.tar.gz
+        mkdir -p $GITHUB_WORKSPACE/bin
+        mv $GITHUB_WORKSPACE/{,bin/}kubeseal
+        chmod +x $GITHUB_WORKSPACE/bin/kubeseal
+        echo $GITHUB_WORKSPACE/bin >> $GITHUB_PATH
