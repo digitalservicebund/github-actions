@@ -1,0 +1,20 @@
+name: "Setup Terraform"
+description: "Sets up Terraform CLI in your GitHub Actions workflow, given version in .terraform-version."
+
+runs:
+  using: "composite"
+  steps:
+    - name: Read required Terraform CLI version
+      id: terraform-version
+      shell: bash
+      run: |
+        set -eu
+        version=$(cat .terraform-version)
+        echo "::set-output name=version::$version"
+    - name: Install Terraform CLI
+      # Third-party action, pin to commit SHA!
+      # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
+      uses: hashicorp/setup-terraform@17d4c9b8043b238f6f35641cdd8433da1e6f3867
+      with:
+        terraform_version: ${{ steps.terraform-version.outputs.version }}
+        terraform_wrapper: false
