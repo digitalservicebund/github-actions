@@ -11,12 +11,19 @@ inputs:
     default: "./"
     description: "The directory where the download & unzipping should take place"
 
+outputs:
+  exec-loc:
+    description: "Location of the SonarScanner executable"
+    value: ${{ steps.install-sonarscanner.outputs.exec-loc }}
+
 runs:
   using: "composite"
   steps:
     - name: Install SonarScanner
+      id: install-sonarscanner
       shell: bash
       run: |
         curl -LO https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ inputs.version }}-linux.zip
         unzip sonar-scanner-cli-${{ inputs.version }}-linux.zip
+        echo "::set-output name=exec-loc::$(echo ./sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner)"
       working-directory: ${{ inputs.directory }}
