@@ -13,8 +13,6 @@ runs:
     - name: Install SonarScanner
       shell: bash
       run: |
-        npm install vitest
-        npm run coverage
         curl -LO https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ inputs.version }}-linux.zip
         unzip sonar-scanner-cli-${{ inputs.version }}-linux.zip
         echo ./sonar-scanner-${{ inputs.version }}-linux/bin/sonar-scanner >> $SONAR_SCANNER_EXEC
