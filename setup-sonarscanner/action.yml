@@ -25,5 +25,5 @@ runs:
       run: |
         curl -LO https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ inputs.version }}-linux.zip
         unzip sonar-scanner-cli-${{ inputs.version }}-linux.zip
-        echo "::set-output name=exec-loc::$(echo ./sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner)"
+        echo "::set-output name=exec-loc::$(echo ./sonar-scanner-${{ inputs.version }}-linux/bin/sonar-scanner)"
       working-directory: ${{ inputs.directory }}
