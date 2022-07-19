@@ -6,6 +6,10 @@ inputs:
     required: false
     default: "4.7.0.2747"
     description: "SonarScanner CLI version to install"
+  directory:
+    required: false
+    default: "./"
+    description: "The directory where the download & unzipping should take place"
 
 runs:
   using: "composite"
@@ -15,3 +19,4 @@ runs:
       run: |
         curl -LO https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ inputs.version }}-linux.zip
         unzip sonar-scanner-cli-${{ inputs.version }}-linux.zip
+      working-directory: ${{ inputs.directory }}
