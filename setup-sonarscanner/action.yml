@@ -16,6 +16,4 @@ runs:
         set -eu
         curl -LO https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ inputs.version }}-linux.zip
         unzip sonar-scanner-cli-${{ inputs.version }}-linux.zip
-        mkdir -p $GITHUB_WORKSPACE/bin
-        mv {./sonar-scanner-${{ inputs.version }}-linux,$GITHUB_WORKSPACE}/bin/sonar-scanner
-        echo $GITHUB_WORKSPACE/bin >> $GITHUB_PATH
+        echo $GITHUB_WORKSPACE/sonar-scanner-${{ inputs.version }}-linux/bin >> $GITHUB_PATH
