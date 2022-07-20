@@ -20,5 +20,5 @@ runs:
       run: |
         curl -LO https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ inputs.version }}-linux.zip
         unzip sonar-scanner-cli-${{ inputs.version }}-linux.zip
-        echo ./sonar-scanner-${{ inputs.version }}-linux/bin/sonar-scanner >> $SONARSCANNER
+        mv sonar-scanner-{{ inputs.version }}-linux sonar-scanner
       working-directory: ${{ inputs.directory }}
