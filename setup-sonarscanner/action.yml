@@ -15,7 +15,6 @@ runs:
   using: "composite"
   steps:
     - name: Install SonarScanner
-      id: install-sonarscanner
       shell: bash
       run: |
         curl -LO https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ inputs.version }}-linux.zip
