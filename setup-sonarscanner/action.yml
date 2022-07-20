@@ -6,10 +6,6 @@ inputs:
     required: false
     default: "4.7.0.2747"
     description: "SonarScanner CLI version to install"
-  directory:
-    required: false
-    default: "./"
-    description: "The directory where the download & unzipping should take place"
 
 runs:
   using: "composite"
@@ -17,6 +13,9 @@ runs:
     - name: Install SonarScanner
       shell: bash
       run: |
+        set -eu
         curl -LO https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ inputs.version }}-linux.zip
         unzip sonar-scanner-cli-${{ inputs.version }}-linux.zip
-      working-directory: ${{ inputs.directory }}
+        mkdir -p $GITHUB_WORKSPACE/bin
+        mv {./sonar-scanner-${{ inputs.version }}-linux,$GITHUB_WORKSPACE}/bin/sonar-scanner
+        echo $GITHUB_WORKSPACE/bin >> $GITHUB_PATH
