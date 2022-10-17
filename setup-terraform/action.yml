@@ -9,8 +9,7 @@ runs:
       shell: bash
       run: |
         set -eu
-        version=$(cat .terraform-version)
-        echo "::set-output name=version::$version"
+        echo "version=$(cat .terraform-version)" >> $GITHUB_OUTPUT
     - name: Install Terraform CLI
       # Third-party action, pin to commit SHA!
       # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
