@@ -55,7 +55,7 @@ runs:
       shell: bash
       run: |
         set -ex
-        ARGOCD_VERSION=$(curl -s https://${ARGOCD_SERVER}/api/version | cut -d "\"" -f 4 | cut -d "+" -f 1)
+        ARGOCD_VERSION=$(curl -s https://${ARGOCD_SERVER}/api/version | jq -r ".Version" | cut -d "+" -f 1)
         curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64"
         chmod +x argocd
         ./argocd login ${ARGOCD_SERVER} --username pipeline --password ${{ inputs.argocd_pipeline_password }} --grpc-web
