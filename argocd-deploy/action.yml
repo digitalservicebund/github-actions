@@ -55,7 +55,8 @@ runs:
       shell: bash
       run: |
         set -ex
-        curl -sSL --retry 3 -o argocd https://${ARGOCD_SERVER}/download/argocd-linux-amd64
+        ARGOCD_VERSION=$(curl -s https://${ARGOCD_SERVER}/api/version | cut -d "\"" -f 4 | cut -d "+" -f 1)
+        curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64"
         chmod +x argocd
         ./argocd login ${ARGOCD_SERVER} --username pipeline --password ${{ inputs.argocd_pipeline_password }} --grpc-web
         ./argocd app wait ${{ inputs.app }} --sync --timeout 120 --grpc-web
