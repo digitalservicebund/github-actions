@@ -53,6 +53,7 @@ runs:
           git push origin main
     - name: Determine ArgoCD version
       id: argocd-version
+      shell: bash
       run: |
         set -ex
         argocd_version=$(curl -s https://${ARGOCD_SERVER}/api/version | jq -r '.Version | split("+")[0]')
@@ -67,6 +68,7 @@ runs:
         key: ${{ steps.argocd-version.outputs.version }}-argocd
     - name: Download argocd executable
       if: steps.cache-argocd.outputs.cache-hit != 'true'
+      shell: bash
       run: |
         set -ex
         curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/download/${{ steps.argocd-version.outputs.version }}/argocd-linux-amd64"
