@@ -51,12 +51,29 @@ runs:
         git diff-index --cached --quiet HEAD ||
           git commit -m "Bump ${{ inputs.environment }} image to ${{ inputs.version }}" -m "[skip ci]" &&
           git push origin main
+    - name: Determine ArgoCD version
+      id: argocd-version
+      run: |
+        set -ex
+        argocd_version=$(curl -s https://${ARGOCD_SERVER}/api/version | jq -r '.Version | split("+")[0]')
+        echo "version=$argocd_version" >> $GITHUB_OUTPUT
+      env:
+        ARGOCD_SERVER: ${{ inputs.argocd_server }}
+    - name: Cache argocd executable
+      id: cache-argocd
+      uses: actions/cache@v3
+      with:
+        path: argocd
+        key: ${{ steps.argocd-version.outputs.version }}-argocd
+    - name: Download argocd executable
+      if: steps.cache-argocd.outputs.cache-hit != 'true'
+      run: |
+        set -ex
+        curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/download/${{ steps.argocd-version.outputs.version }}/argocd-linux-amd64"
     - name: Trigger Argo CD sync
       shell: bash
       run: |
         set -ex
-        ARGOCD_VERSION=$(curl -s https://${ARGOCD_SERVER}/api/version | jq -r '.Version | split("+")[0]')
-        curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64"
         chmod +x argocd
         ./argocd login ${ARGOCD_SERVER} --username pipeline --password ${{ inputs.argocd_pipeline_password }} --grpc-web
         ./argocd app wait ${{ inputs.app }} --sync --timeout 120 --grpc-web
