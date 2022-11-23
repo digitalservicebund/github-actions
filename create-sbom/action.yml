@@ -1,0 +1,40 @@
+name: Create SBOM
+description: "Syft based action to create SBOM (Software Bill of Materials) for a specific docker image"
+
+inputs:
+  repository:
+    required: false
+    default: ""
+    description: "Repository for the image tag"
+  image_tag:
+    required: true
+    description: "Image tag for which the SBOM should be created"
+  output_format:
+    required: false
+    default: "text"
+    description: "The output format of the SBOM. Lookup syft's output formats for more detail"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install syft
+      shell: bash
+      run: |
+        curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v0.62.1
+
+    - name: Save image archive
+      shell: bash
+      run: |
+        docker image save ${{ inputs.repository }}/${{ inputs.image_tag }} > ${{ inputs.image_tag }}.tar
+
+    - name: Create SBOM
+      shell: bash
+      run: |
+        set -ex
+        syft packages ./${{ inputs.image_tag }}.tar -o ${{ inputs.output_format }} > SBOM
+
+    - name: Archive SBOM
+      uses: actions/upload-artifact@v1
+      with:
+        name: SBOM
+        path: SBOM
