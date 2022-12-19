@@ -45,8 +45,9 @@ runs:
       shell: bash
       run: |
         set -ex
-        git config user.name "${{ github.actor }}"
-        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git config user.name "${{ github.workflow }}"
+        # This email identifies the commit as GitHub Actions - see https://github.com/orgs/community/discussions/26560
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com>"
         git add manifests/overlays/${{ inputs.environment }}/kustomization.yaml
         git diff-index --cached --quiet HEAD ||
           git commit -m "Bump ${{ inputs.environment }} image to ${{ inputs.version }}" -m "[skip ci]" &&
