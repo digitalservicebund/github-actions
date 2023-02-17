@@ -26,6 +26,10 @@ inputs:
   argocd_server:
     required: true
     description: "Host name of the server where ArgoCD runs, e.g. argocd.example.com"
+  argocd_sync_timeout:
+    required: false
+    default: '120'
+    description: "Timeout applied to the argocd sync trigger"
 
 runs:
   using: "composite"
@@ -79,8 +83,8 @@ runs:
         set -ex
         chmod +x argocd
         ./argocd login ${ARGOCD_SERVER} --username pipeline --password ${{ inputs.argocd_pipeline_password }} --grpc-web
-        ./argocd app wait ${{ inputs.app }} --sync --timeout 120 --grpc-web
+        ./argocd app wait ${{ inputs.app }} --sync --timeout ${{ inputs.argocd_sync_timeout }} --grpc-web
         ./argocd app get --refresh ${{ inputs.app }} --grpc-web > /dev/null
-        ./argocd app wait ${{ inputs.app }} --sync --health --timeout 120 --grpc-web
+        ./argocd app wait ${{ inputs.app }} --sync --health --timeout ${{ inputs.argocd_sync_timeout }} --grpc-web
       env:
         ARGOCD_SERVER: ${{ inputs.argocd_server }}
