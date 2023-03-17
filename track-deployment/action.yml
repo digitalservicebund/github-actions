@@ -21,4 +21,7 @@ runs:
     - name: Report deployment
       shell: sh
       run: |
-        curl -X POST -H "Authorization: Token ${{ inputs.metrics_webhook_token }}" -H "Content-Type: application/json" -d '{"project":"${{ inputs.project }}","version_identifier":"${{ github.sha }}","environment":"${{ inputs.environment }}","link":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ inputs.metrics_deployment_webhook_url }}
+        status_code=$(curl -o /dev/null -s -w "%{http_code}\n" -X POST -H "Authorization: Token ${{ inputs.metrics_webhook_token }}" -H "Content-Type: application/json" -d '{"project":"${{ inputs.project }}","version_identifier":"${{ github.sha }}","environment":"${{ inputs.environment }}","link":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ inputs.metrics_deployment_webhook_url }})
+        if [[ "$status_code" -ne 200 ]] && [[ "$status_code" -ne 201 ]] ; then
+          exit 1;
+        fi
