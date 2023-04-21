@@ -47,7 +47,7 @@ runs:
         IFS=','
         for repo in ${{ inputs.deploying_repos }}
         do
-          kustomize edit set image ghcr.io/digitalservicebund/${ repo }:${{ inputs.version }}
+          kustomize edit set image ghcr.io/digitalservicebund/${repo}:${{ inputs.version }}
         done
     - name: Commit and push changes for infra repository
       shell: bash
