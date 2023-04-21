@@ -8,7 +8,7 @@ inputs:
   version:
     required: true
     description: "Container image tag being deployed, e.g. a commit SHA."
-  image_repos:
+  deploying_repos:
     required: true
     description: "List of image repositories (image names) being deployed."
   infra_repo:
@@ -40,16 +40,14 @@ runs:
         repository: digitalservicebund/${{ inputs.infra_repo }}
         ssh-key: ${{ inputs.deploy_key }}
     - name: Update image tag for ${{ inputs.environment }}
-      env:
-        IMAGE_REPOS: ${{ join(inputs.image_repos, ',') }}
       shell: bash
       run: |
         set -ex
         cd manifests/overlays/${{ inputs.environment }}
         IFS=','
-        for image_repo in $IMAGE_REPOS
+        for repo in ${{ inputs.deploying_repos }}
         do
-          kustomize edit set image ghcr.io/digitalservicebund/${{ inputs.image_repo }}:${{ inputs.version }}
+          kustomize edit set image ghcr.io/digitalservicebund/${ repo }:${{ inputs.version }}
         done
     - name: Commit and push changes for infra repository
       shell: bash
