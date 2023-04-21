@@ -8,7 +8,7 @@ inputs:
   version:
     required: true
     description: "Container image tag being deployed, e.g. a commit SHA."
-  deploying_repos:
+  deploying_repo:
     required: true
     description: "List of image repositories (image names) being deployed."
   infra_repo:
@@ -41,7 +41,7 @@ runs:
         ssh-key: ${{ inputs.deploy_key }}
     - name: Update image tag for ${{ inputs.environment }}
       env:
-        DEPLOYING_REPOS: ${{ inputs.deploying_repos }}
+        DEPLOYING_REPOS: ${{ inputs.deploying_repo }}
       shell: bash
       run: |
         set -ex
