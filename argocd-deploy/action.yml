@@ -8,9 +8,9 @@ inputs:
   version:
     required: true
     description: "Container image tag being deployed, e.g. a commit SHA."
-  deploying_repo:
+  image_repos:
     required: true
-    description: "Repository which is running the pipeline to deploy from."
+    description: "List of image repositories (image names) being deployed."
   infra_repo:
     required: true
     description: "Repository for ArgoCD to pick up changes from."
@@ -28,7 +28,7 @@ inputs:
     description: "Host name of the server where ArgoCD runs, e.g. argocd.example.com"
   argocd_sync_timeout:
     required: false
-    default: '120'
+    default: "120"
     description: "Timeout applied to the argocd sync trigger"
 
 runs:
@@ -40,11 +40,17 @@ runs:
         repository: digitalservicebund/${{ inputs.infra_repo }}
         ssh-key: ${{ inputs.deploy_key }}
     - name: Update image tag for ${{ inputs.environment }}
+      env:
+        IMAGE_REPOS: ${{ join(inputs.image_repos, ',') }}
       shell: bash
       run: |
         set -ex
         cd manifests/overlays/${{ inputs.environment }}
-        kustomize edit set image ghcr.io/digitalservicebund/${{ inputs.deploying_repo }}:${{ inputs.version }}
+        IFS=','
+        for image_repo in $IMAGE_REPOS
+        do
+          kustomize edit set image ghcr.io/digitalservicebund/${{ inputs.image_repo }}:${{ inputs.version }}
+        done
     - name: Commit and push changes for infra repository
       shell: bash
       run: |
