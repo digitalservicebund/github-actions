@@ -40,12 +40,14 @@ runs:
         repository: digitalservicebund/${{ inputs.infra_repo }}
         ssh-key: ${{ inputs.deploy_key }}
     - name: Update image tag for ${{ inputs.environment }}
+      env:
+        DEPLOYING_REPOS: ${{ inputs.deploying_repos }}
       shell: bash
       run: |
         set -ex
         cd manifests/overlays/${{ inputs.environment }}
-        IFS=','
-        for repo in ${{ inputs.deploying_repos }}
+        IFS=,
+        for repo in $DEPLOYING_REPOS
         do
           kustomize edit set image ghcr.io/digitalservicebund/${repo}:${{ inputs.version }}
         done
