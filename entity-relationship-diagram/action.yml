@@ -1,0 +1,27 @@
+name: 'Export MermaidJS ER-diagrams from a database'
+description: 'Exports MermaidJS entity relationship diagrams from databases'
+inputs:
+  configFile:
+    description: 'Path to a Mermerd config file'
+    required: true
+  connectionString:
+    description: 'Connection string for the database'
+    required: true
+  outputFile:
+    description: 'Path to the output .mmd file'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download Mermerd
+      shell: bash
+      run: wget -c https://github.com/KarnerTh/mermerd/releases/download/v0.8.0/mermerd_0.8.0_linux_amd64.tar.gz
+    - name: Extract Mermerd
+      shell: bash
+      run: |
+        mkdir mermerd
+        tar -xf mermerd_0.8.0_linux_amd64.tar.gz --directory mermerd
+    - name: Generate Mermaid ER diagram
+      shell: bash
+      run: ./mermerd/mermerd --runConfig ${{ inputs.configFile }} -c ${{ inputs.connectionString }} -o ${{ inputs.outputFile }}
