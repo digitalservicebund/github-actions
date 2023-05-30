@@ -10,18 +10,22 @@ inputs:
   outputFile:
     description: 'Path to the output .mmd file'
     required: true
+  version:
+    description: 'Mermerd version'
+    required: false
+    default: 0.8.0
 
 runs:
   using: 'composite'
   steps:
     - name: Download Mermerd
       shell: bash
-      run: wget -c https://github.com/KarnerTh/mermerd/releases/download/v0.8.0/mermerd_0.8.0_linux_amd64.tar.gz
+      run: wget -c https://github.com/KarnerTh/mermerd/releases/download/v${{ inputs.version }}/mermerd_${{ inputs.version }}_linux_amd64.tar.gz
     - name: Extract Mermerd
       shell: bash
       run: |
         mkdir mermerd
-        tar -xf mermerd_0.8.0_linux_amd64.tar.gz --directory mermerd
+        tar -xf mermerd_${{ inputs.version }}_linux_amd64.tar.gz --directory mermerd
     - name: Generate Mermaid ER diagram
       shell: bash
       run: ./mermerd/mermerd --runConfig ${{ inputs.configFile }} -c ${{ inputs.connectionString }} -o ${{ inputs.outputFile }}
