@@ -10,11 +10,13 @@ inputs:
   outputFile:
     description: 'Path to the output .mmd file'
     required: true
+  flags:
+    description: 'Mermerd flags to append'
+    required: false
   version:
     description: 'Mermerd version'
     required: false
     default: 0.8.0
-
 runs:
   using: 'composite'
   steps:
@@ -28,4 +30,4 @@ runs:
         tar -xf mermerd_${{ inputs.version }}_linux_amd64.tar.gz --directory mermerd
     - name: Generate Mermaid ER diagram
       shell: bash
-      run: ./mermerd/mermerd --runConfig ${{ inputs.configFile }} -c ${{ inputs.connectionString }} -o ${{ inputs.outputFile }}
+      run: ./mermerd/mermerd --runConfig ${{ inputs.configFile }} -c ${{ inputs.connectionString }} -o ${{ inputs.outputFile }} ${{ inputs.flags }}
