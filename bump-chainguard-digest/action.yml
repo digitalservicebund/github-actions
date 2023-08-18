@@ -12,7 +12,7 @@ inputs:
 permissions:
   contents: write
 
-jobs:
+runs:
   using: "composite"
   steps:
     - name: Checkout repository
