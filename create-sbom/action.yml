@@ -22,7 +22,7 @@ runs:
     - name: Save image archive
       shell: bash
       run: |
-        docker image save ${{ inputs.image_name }}/${{ inputs.image_tag }} > image_export.tar
+        docker image save ${{ inputs.image_name }} > image_export.tar
 
     - name: Create SBOM
       shell: bash
