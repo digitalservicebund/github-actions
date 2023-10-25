@@ -2,13 +2,10 @@ name: Create SBOM
 description: "Syft based action to create SBOM (Software Bill of Materials) for a specific docker image"
 
 inputs:
-  repository:
-    required: false
-    default: ""
-    description: "Repository for the image tag"
-  image_tag:
+  image_name:
     required: true
-    description: "Image tag for which the SBOM should be created"
+    default: ""
+    description: "Name of the image for which the SBOM should be created. This should contain repository and image tag."
   output_format:
     required: false
     default: "text"
@@ -25,13 +22,13 @@ runs:
     - name: Save image archive
       shell: bash
       run: |
-        docker image save ${{ inputs.repository }}/${{ inputs.image_tag }} > ${{ inputs.image_tag }}.tar
+        docker image save ${{ inputs.image_name }}/${{ inputs.image_tag }} > image_export.tar
 
     - name: Create SBOM
       shell: bash
       run: |
         set -ex
-        syft packages ./${{ inputs.image_tag }}.tar -o ${{ inputs.output_format }} > SBOM
+        syft packages ./image_export.tar -o ${{ inputs.output_format }} > SBOM
 
     - name: Archive SBOM
       uses: actions/upload-artifact@v1
