@@ -4,7 +4,7 @@ description: "Sets up SonarScanner CLI for Linux in your GitHub Actions workflow
 inputs:
   version:
     required: false
-    default: "4.7.0.2747"
+    default: "5.0.1.3006"
     description: "SonarScanner CLI version to install"
 
 runs:
