@@ -13,7 +13,7 @@ runs:
       uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117
       if: ${{ failure() }}
       env:
-        SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url }}
+        SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       with:
         payload: |

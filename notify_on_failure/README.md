@@ -32,7 +32,7 @@ jobs:
       - name: Faulty step
         run: exit 1
       - name: Send failure to Slack
-        uses: digitalservicebund/github-actions/notify_on_failure@sdasdasd
+        uses: digitalservicebund/github-actions/notify_on_failure@570bb08854217af99d57c9ed1fc38cb5afffbe9d
         with:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
