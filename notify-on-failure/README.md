@@ -13,7 +13,7 @@ This GHA sends a message to a Slack channel when a [workflow job](https://docs.g
 
 ```yaml
 - name: Send failure to Slack
-  uses: digitalservicebund/github-actions/notify_on_failure@HASH_PLACEHOLDER
+  uses: digitalservicebund/github-actions/notify-on-failure@HASH_PLACEHOLDER
   if: ${{ failure() }}
   with:
     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -33,7 +33,7 @@ jobs:
       - name: Faulty step
         run: exit 1
       - name: Send failure to Slack
-        uses: digitalservicebund/github-actions/notify_on_failure@9b5f6d80e0ba554a41753b05b12c61c461fca956
+        uses: digitalservicebund/github-actions/notify-on-failure@9b5f6d80e0ba554a41753b05b12c61c461fca956
         if: ${{ failure() }}
         with:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
