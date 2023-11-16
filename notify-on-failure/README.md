@@ -18,7 +18,7 @@ This GHA sends a message to a Slack channel when a [workflow job](https://docs.g
   with:
     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
-- Copy the last commit hash from our [internal GitHub actions repo](https://github.com/digitalservicebund/github-actions/). (Grab it from GitHub's website or clone the repo and run `git rev-parse HEAD`).
+- Copy the last commit hash from our [internal GitHub actions repo](https://github.com/digitalservicebund/github-actions/commits/main/notify-on-failure).
 - Back to your code, search and replace every occurence of `HASH_PLACEHOLDER` with the commit hash you just copied.
 
 ### Example

@@ -17,7 +17,7 @@ runs:
       with:
         payload: |
           {
-            "text": "<!here> <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.job }}> run failed for commit/PR \"<${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.pull_request.title || github.event.head_commit.message }}>\" on <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}> :fire:",
+            "text": "<!here> <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.job }}> run failed for \"<${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.pull_request.title || github.event.head_commit.message }}>\" on <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.repository }}> :fire:",
             "attachments": [
               {
                 "color": "#ff0000",
@@ -26,7 +26,7 @@ runs:
                     "type": "section",
                     "text": {
                       "type": "mrkdwn",
-                      "text": "*Workflow*: ${{ github.workflow }}\n*Failed job*: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.job }}>\n*Commit/PR:* <${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.pull_request.title || github.event.head_commit.message }}>\n*Branch:* ${{ github.ref }}\n*Author:* ${{ github.triggering_actor }}"
+                      "text": "*Workflow*: ${{ github.workflow }}\n*Failed job*: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.job }}>\n*Commit or PR:* <${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.pull_request.title || github.event.head_commit.message }}>\n*Branch:* ${{ github.ref }}\n*Author:* ${{ github.triggering_actor }}"
                     }
                   }
                 ]
