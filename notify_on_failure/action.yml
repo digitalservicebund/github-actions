@@ -1,0 +1,36 @@
+name: "Notify on failure"
+description: "Send a message to Slack when a job fails"
+inputs:
+  slack_webhook_url:
+    description: "url that tells Slack which channel should receive this notification."
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Send failure to Slack
+      # Third-party action, pin to commit SHA!
+      # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
+      uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117
+      if: ${{ failure() }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      with:
+        payload: |
+          {
+            "text": "<!here> <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.job }}> run failed for commit/PR \"<${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.pull_request.title || github.event.head_commit.message }}>\" on <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}> :fire:",
+            "attachments": [
+              {
+                "color": "#ff0000",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "*Workflow*: ${{ github.workflow }}\n*Failed job*: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.job }}>\n*Commit/PR:* <${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.pull_request.title || github.event.head_commit.message }}>\n*Branch:* ${{ github.ref }}\n*Author:* ${{ github.triggering_actor }}"
+                    }
+                  }
+                ]
+              }
+            ]
+          }

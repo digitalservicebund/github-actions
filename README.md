@@ -13,3 +13,4 @@ Reusable workflows and actions for GitHub Actions.
 - setup-sonarscanner
 - setup-terraform
 - track-deployment
+- [notify-on-failure](./notify-on-failure) - Send a message to a slack channel when a CI job fails
