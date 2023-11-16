@@ -1,7 +1,7 @@
 name: "Notify on failure"
 description: "Send a message to Slack when a job fails"
 inputs:
-  slack_webhook_url:
+  SLACK_WEBHOOK_URL:
     description: "url that tells Slack which channel should receive this notification."
     required: true
 runs:
