@@ -16,7 +16,7 @@ inputs:
   version:
     description: 'Mermerd version'
     required: false
-    default: 0.8.0
+    default: 0.10.0
 runs:
   using: 'composite'
   steps:
