@@ -13,7 +13,7 @@ runs:
     - name: Install Terraform CLI
       # Third-party action, pin to commit SHA!
       # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
-      uses: hashicorp/setup-terraform@17d4c9b8043b238f6f35641cdd8433da1e6f3867
+      uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36
       with:
         terraform_version: ${{ steps.terraform-version.outputs.version }}
         terraform_wrapper: false
