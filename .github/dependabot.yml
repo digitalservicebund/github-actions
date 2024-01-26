@@ -1,0 +1,44 @@
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/argocd-deploy"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/bump-chainguard-digest"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/create-sbom"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/entity-relationship-diagram"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/github-actions-linter"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/notify-on-failure"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/setup-kubeseal"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/setup-sonarscanner"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/setup-terraform"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/track-deployment"
+    schedule:
+      interval: "daily"
