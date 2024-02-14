@@ -1,0 +1,65 @@
+name: "git add a report if it has changed"
+description: "The files are only added if there is no 'latest.<fileExtension>' file (or 'latest' dir) or if it has changed"
+inputs:
+  filePath:
+    description: 'The path to the report file or dir'
+    required: true
+  destinationDir:
+    description: 'The destination directory for the report type. Every report has to be in its own directory. The directory must exist.'
+    required: true
+  keepAllVersions:
+    description: 'Whether to keep timestamped version if set to true. Otherwise only the latest version will be saved and overwritten.'
+    default: 'true'
+    required: false
+  reportIsDirectory:
+    description: 'Set to true if the report is not a file but a directory'
+    default: 'false'
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Check that file path does not target a directory
+      if: inputs.reportIsDirectory == 'false' 
+      shell: bash
+      run: |
+        if [ -d "${{ inputs.filePath }}" ]; then
+          echo "File is a directory. Set input 'reportIsDirectory' to 'true'."
+          exit 1
+        fi
+    - name: Prepare report committing for files
+      shell: bash
+      id: preparation
+      run: |
+        if ${{ inputs.reportIsDirectory }}; then
+          extension=
+          rm -r ${{ inputs.destinationDir }}/latest
+        else
+          filepath=${{ inputs.filePath }}
+          extension=.${filepath##*.}
+        fi
+        echo "EXTENSION=$extension" >> $GITHUB_OUTPUT
+        cp -r ${{ inputs.filePath }} ${{ inputs.destinationDir }}/latest$extension
+    - name: Check if report has changed
+      shell: bash
+      id: file-check
+      run: |
+        if git status -s | grep " latest${{ steps.preparation.outputs.EXTENSION }}"; then
+          echo "file_changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "file_changed=false" >> $GITHUB_OUTPUT
+        fi
+      working-directory: ${{ inputs.destinationDir }}
+    - name: Add latest report
+      shell: bash
+      run: |
+        git add latest${{ steps.preparation.outputs.EXTENSION }}
+      if: steps.file-check.outputs.file_changed == 'true'
+      working-directory: ${{ inputs.destinationDir }}
+    - name: Add timestamped report
+      shell: bash
+      run: |
+        NOW=$(TZ=Europe/Berlin date +'%Y-%m-%dT%H%M%S')
+        cp -r latest${{ steps.preparation.outputs.EXTENSION }} $NOW${{ steps.preparation.outputs.EXTENSION }}
+        git add $NOW${{ steps.preparation.outputs.EXTENSION }}
+      if: steps.file-check.outputs.file_changed == 'true' && inputs.keepAllVersions == 'true'
+      working-directory: ${{ inputs.destinationDir }}
