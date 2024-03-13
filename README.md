@@ -14,12 +14,18 @@ Every new GitHub Action should live in a dedicated repo ([example](https://githu
 
 ## Overview
 
-- argocd-deploy
 - [bump-chainguard-digest](./bump-chainguard-digest) - Bump digest for chainguard image
 - create-sbom
 - entity-relationship-diagram
-- [github-actions-linter](./github-actions-linter) - Enforce pinned versions github actions
-- setup-kubeseal
 - setup-sonarscanner
-- setup-terraform
-- track-deployment
+- add-ris-report
+
+### Migrated to dedicated repos
+
+Each of those GHA now have dedicated repos:
+
+- argocd-deploy: https://github.com/digitalservicebund/argocd-deploy
+- setup-kubeseal: https://github.com/digitalservicebund/setup-kubeseal
+- setup-terraform: https://github.com/digitalservicebund/setup-terraform
+- track-deployment: https://github.com/digitalservicebund/track-deployment
+- github-actions-linter: https://github.com/digitalservicebund/github-actions-linter
