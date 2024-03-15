@@ -15,8 +15,6 @@ Every new GitHub Action should live in a dedicated repo ([example](https://githu
 ## Overview
 
 - [bump-chainguard-digest](./bump-chainguard-digest) - Bump digest for chainguard image
-- entity-relationship-diagram
-- add-ris-report
 
 ### Migrated to dedicated repos
 
@@ -29,3 +27,5 @@ Each of those GHA now have dedicated repos:
 - github-actions-linter: https://github.com/digitalservicebund/github-actions-linter
 - create-sbom: https://github.com/digitalservicebund/create-sbom
 - setup-sonarscanner: https://github.com/digitalservicebund/setup-sonarscanner
+- add-ris-report: https://github.com/digitalservicebund/add-ris-report
+- entity-relationship-diagram: https://github.com/digitalservicebund/export-entity-relationship-diagram
