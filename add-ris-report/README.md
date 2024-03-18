@@ -1,4 +1,3 @@
-# GitHub Action
-This action should be used to prepare the git push to the [ris-reports repository](https://github.com/digitalservicebund/ris-reports/).
+# DEPRECATED
 
-It handles timestamping of the reports and only executes a `git add` if the report file has changed.
+GHA moved here: https://github.com/digitalservicebund/add-ris-report

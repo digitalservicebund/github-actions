@@ -1,24 +1,10 @@
 # GitHub Actions
 
-Reusable workflows and actions for GitHub Actions.
+**IMPORTANT: This repo is deprecated. Do not add new GitHub Actions here!**
 
-## Why is Dependabot not updating my repo?
+## GHA new locations
 
-This repo is not versionized: Dependabot has no way of knowing if a new version of a GitHub Actions from this repo is available or not. The Platform team is aware of it and will work on a migration plan.
-
-## I want to add a new internal GitHub Actions
-
-**IMPORTANT: Do not add new GitHub Actions here!**
-
-Every new GitHub Action should live in a dedicated repo ([example](https://github.com/digitalservicebund/notify-on-failure-gha)). That way, when you [cut a new release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository), Dependabot will open PRs in the relevant repos.
-
-## Overview
-
-- [bump-chainguard-digest](./bump-chainguard-digest) - Bump digest for chainguard image
-
-### Migrated to dedicated repos
-
-Each of those GHA now have dedicated repos:
+Every GHA available in this repo has been moved to a new locations.
 
 - argocd-deploy: https://github.com/digitalservicebund/argocd-deploy
 - setup-kubeseal: https://github.com/digitalservicebund/setup-kubeseal
@@ -29,3 +15,4 @@ Each of those GHA now have dedicated repos:
 - setup-sonarscanner: https://github.com/digitalservicebund/setup-sonarscanner
 - add-ris-report: https://github.com/digitalservicebund/add-ris-report
 - entity-relationship-diagram: https://github.com/digitalservicebund/export-entity-relationship-diagram
+- bump-chainguard-digest: https://github.com/digitalservicebund/bump-chainguard-digest
